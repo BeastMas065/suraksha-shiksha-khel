@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LanguageSelector, useLanguage } from './LanguageSelector';
+import { ThemeToggle } from './ThemeToggle';
 import { 
   Bell, 
   Settings, 
@@ -25,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
   const { t } = useLanguage();
 
   return (
-    <header className="bg-background border-b border-border shadow-sm sticky top-0 z-50">
+    <header className="bg-background border-b border-border shadow-sm sticky top-0 z-50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left Section - Logo & Menu */}
@@ -59,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Center Section - XP Display (Hidden on mobile) */}
           <div className="hidden md:flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2">
+            <div className="flex items-center gap-2 bg-muted/60 dark:bg-muted rounded-lg px-3 py-2 transition-colors duration-300">
               <Badge variant="outline" className="bg-primary text-white border-0">
                 {t('level')} {userLevel}
               </Badge>
@@ -76,6 +77,9 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="hidden sm:block">
               <LanguageSelector />
             </div>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {/* Notifications */}
             <Button variant="ghost" size="sm" className="relative">

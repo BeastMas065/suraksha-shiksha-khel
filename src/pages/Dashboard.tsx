@@ -125,10 +125,9 @@ export const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-background p-4 md:p-6 space-y-6">
       {/* Welcome Section with Hero Image */}
       <div className="bg-gradient-primary rounded-2xl p-6 text-white relative overflow-hidden">
-        <img 
-          src={heroDisasterPrep} 
-          alt="Disaster preparedness training" 
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        <div 
+          className="absolute inset-0 w-full h-full object-cover opacity-30 bg-cover bg-center transition-opacity duration-300"
+          style={{ backgroundImage: `url(${heroDisasterPrep})` }}
         />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
           <div className="mb-4 md:mb-0">

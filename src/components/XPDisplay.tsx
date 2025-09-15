@@ -31,7 +31,7 @@ export const XPDisplay: React.FC<XPDisplayProps> = ({ currentXP, level, classNam
   };
 
   return (
-    <div className={`bg-card rounded-xl p-4 shadow-card ${className}`}>
+    <div className={`bg-card rounded-xl p-4 shadow-card transition-colors duration-300 ${className}`}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Badge variant="outline" className={`${getLevelColor(level)} text-white border-0`}>

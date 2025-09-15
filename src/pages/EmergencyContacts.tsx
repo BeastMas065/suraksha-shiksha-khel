@@ -94,10 +94,9 @@ const EmergencyContactsContent: React.FC = () => {
     <div className="min-h-screen bg-background p-4 md:p-6 space-y-6">
       {/* Header with Hero Image */}
       <div className="bg-gradient-to-r from-destructive to-warning rounded-2xl p-6 text-white relative overflow-hidden">
-        <img 
-          src={emergencyHero} 
-          alt="Emergency services workers" 
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        <div 
+          className="absolute inset-0 w-full h-full object-cover opacity-30 bg-cover bg-center transition-opacity duration-300"
+          style={{ backgroundImage: `url(${emergencyHero})` }}
         />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
           <div>

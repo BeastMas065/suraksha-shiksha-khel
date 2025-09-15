@@ -44,7 +44,7 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
   const getCardStyle = () => {
     if (isLocked) return 'opacity-60 cursor-not-allowed';
     if (isCompleted) return 'bg-gradient-success border-success/30';
-    return 'hover:shadow-hover transition-all duration-200 cursor-pointer hover:scale-105';
+    return 'hover:shadow-hover transition-all duration-200 cursor-pointer hover:scale-105 dark:hover:shadow-hover';
   };
 
   const cardContent = (

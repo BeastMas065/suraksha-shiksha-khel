@@ -157,10 +157,9 @@ const SafetyGamesContent: React.FC = () => {
     <div className="min-h-screen bg-background p-4 md:p-6 space-y-6">
       {/* Header with Hero Image */}
       <div className="bg-gradient-success rounded-2xl p-6 text-white relative overflow-hidden">
-        <img 
-          src={safetyGamesHero} 
-          alt="Children playing safety games" 
-          className="absolute inset-0 w-full h-full object-cover opacity-20"
+        <div 
+          className="absolute inset-0 w-full h-full object-cover opacity-20 bg-cover bg-center transition-opacity duration-300"
+          style={{ backgroundImage: `url(${safetyGamesHero})` }}
         />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
           <div>

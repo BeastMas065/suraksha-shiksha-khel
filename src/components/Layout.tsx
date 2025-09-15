@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Header } from './Header';
 import { Navigation } from './Navigation';
 import { LanguageProvider } from './LanguageSelector';
+import { ThemeProvider } from './ThemeProvider';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -17,23 +18,25 @@ export const Layout: React.FC<LayoutProps> = ({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <LanguageProvider>
-      <div className="min-h-screen bg-background">
-        <Header 
-          userXP={userXP} 
-          userLevel={userLevel}
-          onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-        />
-        <div className="flex">
-          <Navigation 
-            isOpen={sidebarOpen} 
-            onToggle={() => setSidebarOpen(!sidebarOpen)} 
+    <ThemeProvider defaultTheme="light">
+      <LanguageProvider>
+        <div className="min-h-screen bg-background transition-colors duration-300">
+          <Header 
+            userXP={userXP} 
+            userLevel={userLevel}
+            onMenuClick={() => setSidebarOpen(!sidebarOpen)}
           />
-          <main className="flex-1 md:ml-0">
-            {children}
-          </main>
+          <div className="flex">
+            <Navigation 
+              isOpen={sidebarOpen} 
+              onToggle={() => setSidebarOpen(!sidebarOpen)} 
+            />
+            <main className="flex-1 md:ml-0">
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
-    </LanguageProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 };

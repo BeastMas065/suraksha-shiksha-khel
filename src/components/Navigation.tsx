@@ -55,9 +55,10 @@ export const Navigation: React.FC<NavigationProps> = ({ isOpen, onToggle }) => {
       {/* Sidebar */}
       <nav className={`
         fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-card border-r border-border
-        transform transition-transform duration-300 ease-in-out z-50
+        transform transition-all duration-300 ease-in-out z-50
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:top-0 md:h-screen md:translate-x-0
+        dark:bg-card dark:border-border
       `}>
         <div className="flex flex-col h-full">
           {/* Close button for mobile */}
@@ -78,10 +79,10 @@ export const Navigation: React.FC<NavigationProps> = ({ isOpen, onToggle }) => {
                 <Button
                   key={item.id}
                   variant={active ? "default" : "ghost"}
-                  className={`w-full justify-start h-12 ${
+                  className={`w-full justify-start h-12 transition-all duration-200 ${
                     active 
-                      ? 'bg-gradient-primary text-white shadow-glow' 
-                      : 'hover:bg-muted text-foreground'
+                      ? 'bg-gradient-primary text-white shadow-glow hover:shadow-glow' 
+                      : 'hover:bg-muted text-foreground hover:text-foreground'
                   }`}
                   onClick={() => handleNavigation(item.path)}
                 >
@@ -95,7 +96,7 @@ export const Navigation: React.FC<NavigationProps> = ({ isOpen, onToggle }) => {
 
           {/* User Info */}
           <div className="p-4 border-t border-border">
-            <div className="bg-muted rounded-lg p-3 space-y-2">
+            <div className="bg-muted/50 dark:bg-muted rounded-lg p-3 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">राज पटेल</span>
                 <Badge variant="outline" className="bg-primary text-white border-0 text-xs">
