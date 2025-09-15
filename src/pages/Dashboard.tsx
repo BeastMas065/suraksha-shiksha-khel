@@ -18,6 +18,9 @@ import {
   Zap,
   Heart,
   MapPin,
+  Globe,
+  Cloud,
+  Flag,
   Trophy,
   Target,
   Star
@@ -303,6 +306,110 @@ export const Dashboard: React.FC = () => {
               <span className="text-sm">Disaster</span>
               <span className="text-xs">1077</span>
             </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Disaster News & Awareness Sites */}
+      <Card className="bg-card border-border hover:shadow-md transition-shadow">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-foreground">
+            <Globe className="h-5 w-5 text-primary" />
+            Disaster News & Awareness
+          </CardTitle>
+          <CardDescription>Stay updated with latest disaster news and awareness</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a 
+              href="https://ndma.gov.in" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-4 rounded-lg border border-border bg-background hover:bg-accent hover:shadow-md transition-all group"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Shield className="h-5 w-5 text-primary group-hover:text-primary-foreground" />
+                <h3 className="font-semibold text-foreground group-hover:text-accent-foreground">NDMA</h3>
+              </div>
+              <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
+                National Disaster Management Authority - Official disaster management portal
+              </p>
+            </a>
+
+            <a 
+              href="https://imd.gov.in" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-4 rounded-lg border border-border bg-background hover:bg-accent hover:shadow-md transition-all group"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Cloud className="h-5 w-5 text-primary group-hover:text-primary-foreground" />
+                <h3 className="font-semibold text-foreground group-hover:text-accent-foreground">IMD</h3>
+              </div>
+              <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
+                India Meteorological Department - Weather alerts and forecasts
+              </p>
+            </a>
+
+            <a 
+              href="https://www.india.gov.in/topics/disaster-management" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-4 rounded-lg border border-border bg-background hover:bg-accent hover:shadow-md transition-all group"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Flag className="h-5 w-5 text-primary group-hover:text-primary-foreground" />
+                <h3 className="font-semibold text-foreground group-hover:text-accent-foreground">India.gov.in</h3>
+              </div>
+              <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
+                Government of India - Disaster management resources and updates
+              </p>
+            </a>
+
+            <a 
+              href="https://reliefweb.int/country/ind" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-4 rounded-lg border border-border bg-background hover:bg-accent hover:shadow-md transition-all group"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Globe className="h-5 w-5 text-primary group-hover:text-primary-foreground" />
+                <h3 className="font-semibold text-foreground group-hover:text-accent-foreground">ReliefWeb</h3>
+              </div>
+              <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
+                UN OCHA - Humanitarian news and disaster updates for India
+              </p>
+            </a>
+
+            <a 
+              href="https://www.redcross.org.in" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-4 rounded-lg border border-border bg-background hover:bg-accent hover:shadow-md transition-all group"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Heart className="h-5 w-5 text-primary group-hover:text-primary-foreground" />
+                <h3 className="font-semibold text-foreground group-hover:text-accent-foreground">Red Cross India</h3>
+              </div>
+              <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
+                Indian Red Cross Society - Disaster relief and preparedness
+              </p>
+            </a>
+
+            <a 
+              href="https://www.who.int/emergencies" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-4 rounded-lg border border-border bg-background hover:bg-accent hover:shadow-md transition-all group"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <AlertTriangle className="h-5 w-5 text-primary group-hover:text-primary-foreground" />
+                <h3 className="font-semibold text-foreground group-hover:text-accent-foreground">WHO Emergency</h3>
+              </div>
+              <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
+                World Health Organization - Health emergency and disaster info
+              </p>
+            </a>
           </div>
         </CardContent>
       </Card>
