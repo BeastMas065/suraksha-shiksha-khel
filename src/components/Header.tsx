@@ -1,14 +1,17 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { LanguageSelector, useLanguage } from './LanguageSelector';
 import { ThemeToggle } from './ThemeToggle';
+import { useAuth } from '@/hooks/useAuth';
 import { 
   Bell, 
   Settings, 
   User, 
   Shield,
-  Menu
+  Menu,
+  LogOut
 } from 'lucide-react';
 import bugmintLogo from '@/assets/bugmint-logo.png';
 
@@ -24,6 +27,11 @@ export const Header: React.FC<HeaderProps> = ({
   onMenuClick 
 }) => {
   const { t } = useLanguage();
+  const { user, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+  };
 
   return (
     <header className="bg-background border-b border-border shadow-sm sticky top-0 z-50 transition-colors duration-300">
@@ -98,9 +106,25 @@ export const Header: React.FC<HeaderProps> = ({
             </Button>
 
             {/* Profile */}
-            <Button variant="ghost" size="sm" className="relative">
-              <User className="h-5 w-5" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="relative">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem disabled className="flex flex-col items-start">
+                  <div className="font-medium">{user?.email}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {user?.user_metadata?.display_name || 'User'}
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Mobile XP Display */}
             <div className="md:hidden">
