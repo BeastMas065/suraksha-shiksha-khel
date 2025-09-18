@@ -20,7 +20,7 @@ import {
   Truck,
   AlertTriangle
 } from 'lucide-react';
-import emergencyHero from '@/assets/emergency-hero.jpg';
+import emergencyHero from '@/assets/hero-disaster-prep.jpeg';
 
 const emergencyContacts = {
   'Gujarat': [
