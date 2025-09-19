@@ -6,6 +6,10 @@
 All colors MUST be HSL.
 */
 
+#lovable-badge {
+        display: none !important;
+    }
+
 @layer base {
   :root {
     --background: 0 0% 100%;
