@@ -6,6 +6,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ModuleCard } from '@/components/ModuleCard';
 import { XPDisplay } from '@/components/XPDisplay';
 import { useLanguage } from '@/components/LanguageSelector';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import { 
   BookOpen, 
   Gamepad2, 
@@ -30,145 +32,72 @@ import {
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import heroDisasterPrep from '@/assets/hero-disaster-prep.jpg';
 
-const mockUserData = {
-  name: 'राज पटेल',
-  xp: 1250,
-  level: 5,
-  region: 'Gujarat',
-  completedModules: 8,
-  totalModules: 12,
-};
-
-const recentAlerts = [
-  {
-    id: 1,
-    type: 'flood',
-    severity: 'high',
-    message: 'Heavy rainfall alert for Gujarat region. Practice evacuation routes.',
-    timestamp: '2 hours ago',
-    icon: CloudRain,
-  },
-  {
-    id: 2,
-    type: 'earthquake',
-    severity: 'medium',
-    message: 'Earthquake drill scheduled for schools in your area.',
-    timestamp: '1 day ago',
-    icon: Zap,
-  },
-];
-
 export const Dashboard: React.FC = () => {
   const { t } = useLanguage();
-  const [selectedRegion, setSelectedRegion] = useState(mockUserData.region);
+  const { getDisplayName, profile, loading: profileLoading } = useUserProfile();
+  const {
+    userProgress,
+    learningModules,
+    safetyGames,
+    safetyAlerts,
+    videoTutorials,
+    achievements,
+    loading: dashboardLoading,
+    error,
+    updateModuleProgress,
+    completeGame
+  } = useDashboardData();
 
-  const learningModules = [
-    {
-      id: 1,
-      title: 'Earthquake Safety',
-      description: 'Learn Drop, Cover, and Hold techniques for earthquake preparedness',
-      icon: Zap,
-      progress: 80,
-      xpReward: 100,
-      difficulty: 'beginner' as const,
-      hoverContent: 'Master the basics of earthquake safety including proper positioning during tremors and post-earthquake procedures.'
-    },
-    {
-      id: 2,
-      title: 'Fire Safety',
-      description: 'Fire prevention, evacuation routes, and firefighting basics',
-      icon: Flame,
-      progress: 60,
-      xpReward: 120,
-      difficulty: 'intermediate' as const,
-      hoverContent: 'Comprehensive fire safety training covering prevention, detection, and evacuation procedures for homes and schools.'
-    },
-    {
-      id: 3,
-      title: 'Flood Preparedness',
-      description: 'Water safety, emergency supplies, and evacuation procedures',
-      icon: CloudRain,
-      progress: 0,
-      xpReward: 150,
-      difficulty: 'advanced' as const,
-      hoverContent: 'Advanced flood preparedness including early warning systems, emergency kit preparation, and water safety techniques.'
-    },
-    {
-      id: 4,
-      title: 'First Aid Basics',
-      description: 'Essential first aid skills for emergency situations',
-      icon: Heart,
-      progress: 100,
-      xpReward: 80,
-      difficulty: 'beginner' as const,
-      isCompleted: true,
-      hoverContent: 'Learn critical first aid skills including CPR, wound care, and emergency response protocols.'
-    },
-  ];
+  const [selectedRegion, setSelectedRegion] = useState(userProgress?.region || 'India');
 
-  const safetyGames = [
-    {
-      id: 1,
-      title: 'Escape Room Challenge',
-      description: 'Navigate through disaster scenarios in this interactive game',
-      icon: Target,
-      xpReward: 50,
-      difficulty: 'intermediate' as const,
-      hoverContent: 'Roblox-style escape room where players must solve puzzles and make quick decisions during emergencies.'
-    },
-    {
-      id: 2,
-      title: 'Safety Hero Quest',
-      description: 'Role-play as a safety hero helping your community',
-      icon: Shield,
-      xpReward: 75,
-      difficulty: 'beginner' as const,
-      hoverContent: 'Adventure game where players become safety heroes, earning points by helping virtual community members during disasters.'
-    },
-  ];
+  const displayName = getDisplayName();
+  const currentXP = userProgress?.current_xp || 0;
+  const currentLevel = userProgress?.current_level || 1;
+  const completedModules = userProgress?.completed_modules || 0;
+  const totalGameScore = userProgress?.total_game_score || 0;
 
-  const youtubeVideos = [
-    {
-      id: 1,
-      title: 'Earthquake Safety Training',
-      description: 'Complete guide to Drop, Cover, and Hold technique',
-      videoId: 'dQw4w9WgXcQ',
-      duration: '12:45',
-      views: '2.3M',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-      hoverContent: 'Learn the essential earthquake safety protocols used by professionals worldwide. This comprehensive tutorial covers before, during, and after earthquake procedures.'
-    },
-    {
-      id: 2,
-      title: 'Fire Safety for Schools and Homes',
-      description: 'Fire prevention and emergency evacuation procedures',
-      videoId: 'dQw4w9WgXcQ',
-      duration: '15:30',
-      views: '1.8M',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-      hoverContent: 'Comprehensive fire safety training covering prevention techniques, proper use of fire extinguishers, and evacuation planning for various environments.'
-    },
-    {
-      id: 3,
-      title: 'Flood Preparedness Guide',
-      description: 'Water safety and emergency kit preparation',
-      videoId: 'dQw4w9WgXcQ',
-      duration: '18:20',
-      views: '1.5M',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-      hoverContent: 'Expert guidance on flood preparedness including early warning systems, creating emergency kits, and safe evacuation procedures during flood situations.'
-    },
-    {
-      id: 4,
-      title: 'First Aid Basics for Everyone',
-      description: 'Essential first aid skills and CPR training',
-      videoId: 'dQw4w9WgXcQ',
-      duration: '22:15',
-      views: '3.1M',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-      hoverContent: 'Learn life-saving first aid techniques including CPR, wound care, and emergency response protocols that everyone should know.'
-    }
-  ];
+  if (profileLoading || dashboardLoading) {
+    return (
+      <div className="min-h-screen bg-background p-4 md:p-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-pulse text-lg">Loading your dashboard...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background p-4 md:p-6 flex items-center justify-center">
+        <div className="text-center text-destructive">
+          <div className="text-lg font-semibold">Error loading dashboard</div>
+          <div className="text-sm mt-2">{error}</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Helper function to get icon component from string
+  const getIconComponent = (iconName: string) => {
+    const icons: Record<string, any> = {
+      Activity: Target,
+      Flame,
+      Waves: CloudRain,
+      Heart,
+      MapPin,
+      Package: Target,
+      Zap,
+      Award: Trophy,
+      BookOpen,
+      Trophy,
+      Star,
+      Shield,
+      AlertTriangle,
+      CloudRain,
+      Car: Target,
+    };
+    return icons[iconName] || Target;
+  };
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 space-y-6">
@@ -180,7 +109,7 @@ export const Dashboard: React.FC = () => {
         />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
           <div className="mb-4 md:mb-0">
-            <h1 className="text-3xl font-bold mb-2">नमस्ते, {mockUserData.name}! 👋</h1>
+            <h1 className="text-3xl font-bold mb-2">Hello, {displayName}! 👋</h1>
             <p className="text-lg opacity-90">Ready to learn and stay safe today?</p>
             <div className="flex items-center gap-2 mt-2">
               <MapPin className="h-4 w-4" />
@@ -189,11 +118,11 @@ export const Dashboard: React.FC = () => {
           </div>
           <div className="flex gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold">{mockUserData.completedModules}</div>
+              <div className="text-2xl font-bold">{completedModules}</div>
               <div className="text-sm opacity-80">Modules Done</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold">{mockUserData.level}</div>
+              <div className="text-2xl font-bold">{currentLevel}</div>
               <div className="text-sm opacity-80">Safety Level</div>
             </div>
           </div>
@@ -204,8 +133,8 @@ export const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <XPDisplay 
-            currentXP={mockUserData.xp} 
-            level={mockUserData.level}
+            currentXP={currentXP} 
+            level={currentLevel}
             className="mb-6"
           />
         </div>
@@ -218,18 +147,22 @@ export const Dashboard: React.FC = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Drills Completed</span>
-              <span className="font-semibold">23</span>
+              <span className="text-muted-foreground">Modules Completed</span>
+              <span className="font-semibold">{completedModules}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Games Played</span>
-              <span className="font-semibold">15</span>
+              <span className="text-muted-foreground">Total Game Score</span>
+              <span className="font-semibold">{totalGameScore}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Achievements</span>
+              <span className="font-semibold">{achievements.length}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Safety Rank</span>
               <Badge variant="outline" className="bg-warning text-white border-0">
                 <Star className="h-3 w-3 mr-1" />
-                Gold
+                {currentLevel >= 5 ? 'Gold' : currentLevel >= 3 ? 'Silver' : 'Bronze'}
               </Badge>
             </div>
           </CardContent>
@@ -247,21 +180,31 @@ export const Dashboard: React.FC = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {recentAlerts.map((alert) => (
-              <Alert key={alert.id} className="border-l-4 border-l-destructive">
-                <alert.icon className="h-4 w-4" />
-                <AlertTitle className="flex items-center justify-between">
-                  <span>Safety Alert</span>
-                  <Badge variant="outline" className={`${alert.severity === 'high' ? 'bg-destructive' : 'bg-warning'} text-white border-0`}>
-                    {alert.severity}
-                  </Badge>
-                </AlertTitle>
-                <AlertDescription>
-                  {alert.message}
-                  <div className="text-xs text-muted-foreground mt-1">{alert.timestamp}</div>
-                </AlertDescription>
-              </Alert>
-            ))}
+            {safetyAlerts.length > 0 ? (
+              safetyAlerts.map((alert) => {
+                const IconComponent = getIconComponent(alert.icon);
+                const timeAgo = new Date(alert.created_at).toLocaleDateString();
+                return (
+                  <Alert key={alert.id} className="border-l-4 border-l-destructive">
+                    <IconComponent className="h-4 w-4" />
+                    <AlertTitle className="flex items-center justify-between">
+                      <span>{alert.type}</span>
+                      <Badge variant="outline" className={`${alert.severity === 'high' || alert.severity === 'critical' ? 'bg-destructive' : alert.severity === 'medium' ? 'bg-warning' : 'bg-muted'} text-white border-0`}>
+                        {alert.severity}
+                      </Badge>
+                    </AlertTitle>
+                    <AlertDescription>
+                      {alert.message}
+                      <div className="text-xs text-muted-foreground mt-1">{timeAgo}</div>
+                    </AlertDescription>
+                  </Alert>
+                );
+              })
+            ) : (
+              <div className="text-center text-muted-foreground py-4">
+                No recent alerts for your region
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -277,41 +220,44 @@ export const Dashboard: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {learningModules.map((module) => (
-            <HoverCard key={module.id}>
-              <HoverCardTrigger asChild>
-                <div>
-                  <ModuleCard
-                    title={module.title}
-                    description={module.description}
-                    icon={module.icon}
-                    progress={module.progress}
-                    xpReward={module.xpReward}
-                    difficulty={module.difficulty}
-                    isCompleted={module.isCompleted}
-                    hoverContent={module.hoverContent}
-                    onClick={() => console.log(`Opening module: ${module.title}`)}
-                  />
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80">
-                <div className="flex justify-between space-x-4">
-                  <div className="space-y-1">
-                    <h4 className="text-sm font-semibold">{module.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {module.hoverContent}
-                    </p>
-                    <div className="flex items-center pt-2">
-                      <module.icon className="mr-2 h-4 w-4 opacity-70" />
-                      <span className="text-xs text-muted-foreground">
-                        {module.xpReward} XP • {module.difficulty}
-                      </span>
+          {learningModules.map((module) => {
+            const IconComponent = getIconComponent(module.icon);
+            return (
+              <HoverCard key={module.id}>
+                <HoverCardTrigger asChild>
+                  <div>
+                    <ModuleCard
+                      title={module.title}
+                      description={module.description}
+                      icon={IconComponent}
+                      progress={module.progress || 0}
+                      xpReward={module.xp_reward}
+                      difficulty={module.difficulty.toLowerCase() as 'beginner' | 'intermediate' | 'advanced'}
+                      isCompleted={module.is_completed}
+                      hoverContent={module.hover_content || ''}
+                      onClick={() => updateModuleProgress(module.id, (module.progress || 0) + 10)}
+                    />
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <div className="flex justify-between space-x-4">
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-semibold">{module.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {module.hover_content}
+                      </p>
+                      <div className="flex items-center pt-2">
+                        <IconComponent className="mr-2 h-4 w-4 opacity-70" />
+                        <span className="text-xs text-muted-foreground">
+                          {module.xp_reward} XP • {module.difficulty}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
-          ))}
+                </HoverCardContent>
+              </HoverCard>
+            );
+          })}
         </div>
       </div>
 
@@ -326,40 +272,44 @@ export const Dashboard: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {safetyGames.map((game) => (
-            <HoverCard key={game.id}>
-              <HoverCardTrigger asChild>
-                <div>
-                  <ModuleCard
-                    title={game.title}
-                    description={game.description}
-                    icon={game.icon}
-                    xpReward={game.xpReward}
-                    difficulty={game.difficulty}
-                    hoverContent={game.hoverContent}
-                    onClick={() => console.log(`Starting game: ${game.title}`)}
-                    className="bg-gradient-to-br from-secondary/10 to-accent/10 border-secondary/30"
-                  />
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80">
-                <div className="flex justify-between space-x-4">
-                  <div className="space-y-1">
-                    <h4 className="text-sm font-semibold">{game.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {game.hoverContent}
-                    </p>
-                    <div className="flex items-center pt-2">
-                      <game.icon className="mr-2 h-4 w-4 opacity-70" />
-                      <span className="text-xs text-muted-foreground">
-                        {game.xpReward} XP • {game.difficulty}
-                      </span>
+          {safetyGames.map((game) => {
+            const IconComponent = getIconComponent(game.icon);
+            return (
+              <HoverCard key={game.id}>
+                <HoverCardTrigger asChild>
+                  <div>
+                    <ModuleCard
+                      title={game.title}
+                      description={game.description}
+                      icon={IconComponent}
+                      xpReward={game.xp_reward}
+                      difficulty={game.difficulty === 'Easy' ? 'beginner' : game.difficulty === 'Medium' ? 'intermediate' : 'advanced'}
+                      isCompleted={game.is_completed}
+                      hoverContent={game.hover_content || ''}
+                      onClick={() => completeGame(game.id, Math.floor(Math.random() * 100) + 50)}
+                      className="bg-gradient-to-br from-secondary/10 to-accent/10 border-secondary/30"
+                    />
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <div className="flex justify-between space-x-4">
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-semibold">{game.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {game.hover_content}
+                      </p>
+                      <div className="flex items-center pt-2">
+                        <IconComponent className="mr-2 h-4 w-4 opacity-70" />
+                        <span className="text-xs text-muted-foreground">
+                          {game.xp_reward} XP • {game.difficulty}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
-          ))}
+                </HoverCardContent>
+              </HoverCard>
+            );
+          })}
         </div>
       </div>
 
@@ -374,7 +324,7 @@ export const Dashboard: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {youtubeVideos.map((video) => (
+          {videoTutorials.map((video) => (
             <HoverCard key={video.id}>
               <HoverCardTrigger asChild>
                 <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-card border-border">
@@ -390,7 +340,7 @@ export const Dashboard: React.FC = () => {
                     <h3 className="font-semibold text-sm mb-2 line-clamp-2">{video.title}</h3>
                     <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{video.description}</p>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{video.views} views</span>
+                      <span>{video.views.toLocaleString()} views</span>
                       <div className="flex items-center gap-1">
                         <Youtube className="h-3 w-3" />
                         <span>Tutorial</span>
@@ -403,14 +353,14 @@ export const Dashboard: React.FC = () => {
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold">{video.title}</h4>
                   <p className="text-sm text-muted-foreground">
-                    {video.hoverContent}
+                    {video.hover_content}
                   </p>
                   <div className="flex items-center justify-between pt-2">
                     <div className="flex items-center gap-2">
                       <Youtube className="h-4 w-4 text-red-600" />
                       <span className="text-xs text-muted-foreground">{video.duration}</span>
                     </div>
-                    <span className="text-xs text-muted-foreground">{video.views} views</span>
+                    <span className="text-xs text-muted-foreground">{video.views.toLocaleString()} views</span>
                   </div>
                 </div>
               </HoverCardContent>
