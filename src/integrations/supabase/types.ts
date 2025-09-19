@@ -14,6 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          is_active: boolean
+          requirement_type: string
+          requirement_value: number
+          title: string
+          updated_at: string
+          xp_reward: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          icon: string
+          id?: string
+          is_active?: boolean
+          requirement_type: string
+          requirement_value: number
+          title: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          requirement_type?: string
+          requirement_value?: number
+          title?: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
+      learning_modules: {
+        Row: {
+          content_url: string | null
+          created_at: string
+          description: string
+          difficulty: string
+          hover_content: string | null
+          icon: string
+          id: string
+          is_active: boolean
+          order_index: number
+          title: string
+          updated_at: string
+          xp_reward: number
+        }
+        Insert: {
+          content_url?: string | null
+          created_at?: string
+          description: string
+          difficulty: string
+          hover_content?: string | null
+          icon: string
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          title: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Update: {
+          content_url?: string | null
+          created_at?: string
+          description?: string
+          difficulty?: string
+          hover_content?: string | null
+          icon?: string
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          title?: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -38,6 +122,314 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      safety_alerts: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          icon: string
+          id: string
+          is_active: boolean
+          message: string
+          region: string | null
+          severity: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          icon: string
+          id?: string
+          is_active?: boolean
+          message: string
+          region?: string | null
+          severity: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          icon?: string
+          id?: string
+          is_active?: boolean
+          message?: string
+          region?: string | null
+          severity?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      safety_games: {
+        Row: {
+          created_at: string
+          description: string
+          difficulty: string
+          game_url: string | null
+          hover_content: string | null
+          icon: string
+          id: string
+          is_active: boolean
+          order_index: number
+          title: string
+          updated_at: string
+          xp_reward: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          difficulty: string
+          game_url?: string | null
+          hover_content?: string | null
+          icon: string
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          title: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          difficulty?: string
+          game_url?: string | null
+          hover_content?: string | null
+          icon?: string
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          title?: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_achievements_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      user_game_scores: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          game_id: string
+          id: string
+          is_completed: boolean
+          score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          game_id: string
+          id?: string
+          is_completed?: boolean
+          score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          game_id?: string
+          id?: string
+          is_completed?: boolean
+          score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_game_scores_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "safety_games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_game_scores_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      user_module_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          is_completed: boolean
+          module_id: string
+          progress: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean
+          module_id: string
+          progress?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean
+          module_id?: string
+          progress?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "learning_modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_module_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      user_progress: {
+        Row: {
+          completed_modules: number
+          created_at: string
+          current_level: number
+          current_xp: number
+          id: string
+          region: string | null
+          total_game_score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_modules?: number
+          created_at?: string
+          current_level?: number
+          current_xp?: number
+          id?: string
+          region?: string | null
+          total_game_score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_modules?: number
+          created_at?: string
+          current_level?: number
+          current_xp?: number
+          id?: string
+          region?: string | null
+          total_game_score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      video_tutorials: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          duration: string
+          hover_content: string | null
+          id: string
+          is_active: boolean
+          order_index: number
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_id: string
+          views: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          duration: string
+          hover_content?: string | null
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_id: string
+          views?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          duration?: string
+          hover_content?: string | null
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_id?: string
+          views?: number
         }
         Relationships: []
       }
