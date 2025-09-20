@@ -53,6 +53,252 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_settings: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_public: boolean
+          setting_key: string
+          setting_type: string
+          setting_value: Json
+          updated_at: string
+          updated_by: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          setting_key: string
+          setting_type: string
+          setting_value: Json
+          updated_at?: string
+          updated_by: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          setting_key?: string
+          setting_type?: string
+          setting_value?: Json
+          updated_at?: string
+          updated_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      admin_users: {
+        Row: {
+          admin_level: string
+          created_at: string
+          id: string
+          permissions: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_level?: string
+          created_at?: string
+          id?: string
+          permissions?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_level?: string
+          created_at?: string
+          id?: string
+          permissions?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          ip_address: unknown | null
+          new_values: Json | null
+          old_values: Json | null
+          record_id: string | null
+          table_name: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      disaster_drills: {
+        Row: {
+          completion_rate: number | null
+          created_at: string
+          created_by: string
+          description: string | null
+          drill_type: string
+          duration_minutes: number
+          id: string
+          is_mandatory: boolean
+          participants_count: number
+          region: string | null
+          scheduled_date: string
+          school_id: string | null
+          state: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completion_rate?: number | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          drill_type: string
+          duration_minutes?: number
+          id?: string
+          is_mandatory?: boolean
+          participants_count?: number
+          region?: string | null
+          scheduled_date: string
+          school_id?: string | null
+          state?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completion_rate?: number | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          drill_type?: string
+          duration_minutes?: number
+          id?: string
+          is_mandatory?: boolean
+          participants_count?: number
+          region?: string | null
+          scheduled_date?: string
+          school_id?: string | null
+          state?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disaster_drills_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "disaster_drills_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      drill_participants: {
+        Row: {
+          created_at: string
+          drill_id: string
+          feedback: string | null
+          id: string
+          participated: boolean
+          participated_at: string | null
+          participation_score: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          drill_id: string
+          feedback?: string | null
+          id?: string
+          participated?: boolean
+          participated_at?: string | null
+          participation_score?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          drill_id?: string
+          feedback?: string | null
+          id?: string
+          participated?: boolean
+          participated_at?: string | null
+          participation_score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drill_participants_drill_id_fkey"
+            columns: ["drill_id"]
+            isOneToOne: false
+            referencedRelation: "disaster_drills"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "drill_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       learning_modules: {
         Row: {
           content_url: string | null
@@ -206,6 +452,105 @@ export type Database = {
           title?: string
           updated_at?: string
           xp_reward?: number
+        }
+        Relationships: []
+      }
+      school_users: {
+        Row: {
+          id: string
+          is_active: boolean
+          joined_at: string
+          role: string
+          school_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          role?: string
+          school_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          is_active?: boolean
+          joined_at?: string
+          role?: string
+          school_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "school_users_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "school_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      schools: {
+        Row: {
+          address: string | null
+          code: string
+          contact_email: string | null
+          contact_person: string | null
+          contact_phone: string | null
+          created_at: string
+          district: string
+          id: string
+          is_active: boolean
+          name: string
+          region: string
+          registration_date: string
+          state: string
+          total_students: number
+          total_teachers: number
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          code: string
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          district: string
+          id?: string
+          is_active?: boolean
+          name: string
+          region: string
+          registration_date?: string
+          state: string
+          total_students?: number
+          total_teachers?: number
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          code?: string
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          district?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          region?: string
+          registration_date?: string
+          state?: string
+          total_students?: number
+          total_teachers?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -438,7 +783,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: { user_uuid: string }
+        Returns: boolean
+      }
+      is_super_admin: {
+        Args: { user_uuid: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
