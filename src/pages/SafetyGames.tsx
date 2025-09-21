@@ -20,7 +20,7 @@ import {
   Lock,
   CheckCircle
 } from 'lucide-react';
-import safetyGamesHero from '@/assets/safety-games-hero.jpg';
+import safetyGamesHero from '@/assets/SL_060521_43530_09.jpg';
 
 const safetyGames = [
   {
