@@ -3,13 +3,22 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+interface UserRole {
+  isAdmin: boolean;
+  isStudent: boolean;
+  adminLevel?: string;
+  permissions?: any;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  userRole: UserRole;
   loading: boolean;
   signUp: (email: string, password: string, displayName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  checkUserRole: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,8 +26,39 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [userRole, setUserRole] = useState<UserRole>({ isAdmin: false, isStudent: true });
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  const checkUserRole = async () => {
+    if (!user) {
+      setUserRole({ isAdmin: false, isStudent: true });
+      return;
+    }
+
+    try {
+      // Check if user is admin
+      const { data: adminData } = await supabase
+        .from('admin_users')
+        .select('admin_level, permissions')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (adminData) {
+        setUserRole({
+          isAdmin: true,
+          isStudent: false,
+          adminLevel: adminData.admin_level,
+          permissions: adminData.permissions
+        });
+      } else {
+        setUserRole({ isAdmin: false, isStudent: true });
+      }
+    } catch (error) {
+      console.error('Error checking user role:', error);
+      setUserRole({ isAdmin: false, isStudent: true });
+    }
+  };
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -26,6 +66,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // Check user role when auth state changes
+        if (session?.user) {
+          setTimeout(() => {
+            checkUserRole();
+          }, 100);
+        } else {
+          setUserRole({ isAdmin: false, isStudent: true });
+        }
+        
         setLoading(false);
       }
     );
@@ -34,6 +84,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
+      if (session?.user) {
+        setTimeout(() => {
+          checkUserRole();
+        }, 100);
+      }
+      
       setLoading(false);
     });
 
@@ -102,10 +159,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider value={{
       user,
       session,
+      userRole,
       loading,
       signUp,
       signIn,
       signOut,
+      checkUserRole,
     }}>
       {children}
     </AuthContext.Provider>

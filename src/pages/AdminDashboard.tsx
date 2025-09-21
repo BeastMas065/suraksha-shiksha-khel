@@ -8,6 +8,7 @@ import { Layout } from '@/components/Layout';
 import { useLanguage } from '@/components/LanguageSelector';
 import { useAdminData } from '@/hooks/useAdminData';
 import AdminSettings from '@/components/AdminSettings';
+import { VideoManagement } from '@/components/VideoManagement';
 import { 
   Users, 
   BookOpen, 
@@ -20,7 +21,8 @@ import {
   CheckCircle,
   Clock,
   Settings,
-  BarChart3
+  BarChart3,
+  Youtube
 } from 'lucide-react';
 
 const AdminDashboardOverview: React.FC = () => {
@@ -288,10 +290,14 @@ const AdminDashboardContent: React.FC = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full max-w-md grid-cols-2">
+        <TabsList className="grid w-full max-w-lg grid-cols-3">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
             Overview
+          </TabsTrigger>
+          <TabsTrigger value="videos" className="flex items-center gap-2">
+            <Youtube className="h-4 w-4" />
+            Videos
           </TabsTrigger>
           <TabsTrigger value="settings" className="flex items-center gap-2">
             <Settings className="h-4 w-4" />
@@ -301,6 +307,10 @@ const AdminDashboardContent: React.FC = () => {
 
         <TabsContent value="overview">
           <AdminDashboardOverview />
+        </TabsContent>
+
+        <TabsContent value="videos">
+          <VideoManagement />
         </TabsContent>
 
         <TabsContent value="settings">
