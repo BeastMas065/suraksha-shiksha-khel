@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -101,8 +102,10 @@ export const Header: React.FC<HeaderProps> = ({
             </Button>
 
             {/* Settings */}
-            <Button variant="ghost" size="sm">
-              <Settings className="h-5 w-5" />
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/settings">
+                <Settings className="h-5 w-5" />
+              </Link>
             </Button>
 
             {/* Profile */}

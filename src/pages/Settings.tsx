@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useUserSettings } from '@/hooks/useUserSettings';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   User, 
   Bell, 
@@ -26,7 +27,7 @@ import {
   AlertTriangle,
   Volume2,
   Eye,
-  Settings
+  Settings as SettingsIcon
 } from 'lucide-react';
 
 const ProfileSettings: React.FC = () => {
@@ -511,7 +512,7 @@ const SettingsContent: React.FC = () => {
   );
 };
 
-export const Settings: React.FC = () => {
+export const UserSettings: React.FC = () => {
   return (
     <Layout>
       <SettingsContent />

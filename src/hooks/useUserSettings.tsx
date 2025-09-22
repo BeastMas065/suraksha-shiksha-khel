@@ -54,7 +54,7 @@ export const useUserSettings = () => {
         .from('user_settings')
         .select('*')
         .eq('user_id', user.id)
-        .maybeSingle();
+        .maybeSingle() as any;
 
       if (settingsError && settingsError.code !== 'PGRST116') {
         throw settingsError;
@@ -77,7 +77,7 @@ export const useUserSettings = () => {
           .from('user_settings')
           .insert([defaultSettings])
           .select()
-          .single();
+          .single() as any;
 
         if (createError) throw createError;
         data = newSettings;
@@ -101,11 +101,11 @@ export const useUserSettings = () => {
         .update(updates)
         .eq('user_id', user.id)
         .select()
-        .single();
+        .single() as any;
 
       if (updateError) throw updateError;
 
-      setSettings(data);
+      setSettings(data as any);
       
       toast({
         title: "Settings Updated",

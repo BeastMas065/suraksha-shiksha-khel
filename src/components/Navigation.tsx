@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -112,9 +112,11 @@ export const Navigation: React.FC<NavigationProps> = ({ isOpen, onToggle }) => {
               </div>
             </div>
             
-            <Button variant="ghost" className="w-full mt-3 justify-start">
-              <Settings className="h-4 w-4 mr-3" />
-              {t('settings')}
+            <Button variant="ghost" className="w-full mt-3 justify-start" asChild>
+              <Link to="/settings">
+                <Settings className="h-4 w-4 mr-3" />
+                {t('settings')}
+              </Link>
             </Button>
           </div>
         </div>

@@ -8,9 +8,11 @@ import Auth from "./pages/Auth";
 import { SafetyGames } from "./pages/SafetyGames";
 import { EmergencyContacts } from "./pages/EmergencyContacts";
 import { AdminDashboard } from "./pages/AdminDashboard";
+import { UserSettings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ProtectedAdminRoute } from "./components/ProtectedAdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -38,10 +40,15 @@ const App = () => (
                 <EmergencyContacts />
               </ProtectedRoute>
             } />
-            <Route path="/admin" element={
+            <Route path="/settings" element={
               <ProtectedRoute>
-                <AdminDashboard />
+                <UserSettings />
               </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

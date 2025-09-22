@@ -730,6 +730,56 @@ export type Database = {
           },
         ]
       }
+      user_settings: {
+        Row: {
+          auto_save: boolean
+          created_at: string
+          email_alerts: boolean
+          id: string
+          language: string
+          notifications_enabled: boolean
+          privacy_level: string
+          sound_effects: boolean
+          theme: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_save?: boolean
+          created_at?: string
+          email_alerts?: boolean
+          id?: string
+          language?: string
+          notifications_enabled?: boolean
+          privacy_level?: string
+          sound_effects?: boolean
+          theme?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_save?: boolean
+          created_at?: string
+          email_alerts?: boolean
+          id?: string
+          language?: string
+          notifications_enabled?: boolean
+          privacy_level?: string
+          sound_effects?: boolean
+          theme?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_settings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       video_tutorials: {
         Row: {
           category: string
